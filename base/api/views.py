@@ -26,3 +26,27 @@ def getRoom(request, pk):
     serializer = RoomSerializer(room, many=False) # return back a single object
     return Response(serializer.data)
 
+
+@api_view(['POST'])
+def createRoom(request):
+    serializer = RoomSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def updateRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    serializer = RoomSerializer(instance=room, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def deleteRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    room.delete()
+    return Response('Task deleted successfully!')
+
